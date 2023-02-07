@@ -11,6 +11,8 @@
 
 ## 도메인 분석 설계
 
+<br>
+
 **요구사항 분석**
 
 실제 동작하는 화면을 먼저 확인한다.
@@ -48,6 +50,9 @@
 상품 분류 : 상품은 도서, 음반, 영화로 구분되는데 상품이라는 공통 속성을 사용하므로 상속구조로 표현했다.
 
 
+<br>
+
+
 **회원 엔티티 분석**
 
 
@@ -73,6 +78,9 @@
 회원이 주문을 참조하지 않고, 주문이 회원을 참조하는 것으로 충분하다. 여기서는 일대다, 다대일의 양방향 연관관계를 설명하기 위해 추가했다. 
 
 
+<br>
+
+
 **회원 테이블 분석**
 
 ![](https://user-images.githubusercontent.com/109144975/216894972-31b29cd8-1f8a-474a-9630-905a577fef2f.png)
@@ -92,6 +100,9 @@ ORDERS : ORDER은 MEMBER와의 관계에서 일대다 중 다 이다. MEMBER_ID(
 > 주인이 아닌 쪽은 읽기만 할 수 있다.
 > - 연관관계의 주인을 정한다는 것 = 외래 키 관리자를 선택하는 것.
 
+<br>
+
+
 **연관관계 매핑 분석**
 
 회원과 주문 : 일대다, 다대일 양방향 관계다. 따라서 외래 키가 있는 주문(Order)을 연관관계의 주인으로 정하는 것이 좋다. 그러므로 Order.member를 ORDERS.MEMBER_ID
@@ -103,6 +114,9 @@ ORDERS : ORDER은 MEMBER와의 관계에서 일대다 중 다 이다. MEMBER_ID(
 주문상품과 상품 : 다대일 단방향 관계다. OrderItem.item을 ORDER_ITEM.ITEM_ID 외래 키와 매핑한다.
 
 주문과 배송 : 일대일 양방향 관계다. Order.delivery를 ORDERS.DELIVERY_ID 외래 키와 매핑한다.
+
+
+<br>
 
 
 **엔티티 클래스 개발**
@@ -121,6 +135,9 @@ ORDERS : ORDER은 MEMBER와의 관계에서 일대다 중 다 이다. MEMBER_ID(
 Member )이 있으므로 id 필드만으로 쉽게 구분할 수 있다. 테이블은 타입이 없으므로 구분이 어렵다.
 그리고 테이블은 관례상 테이블명 + id 를 많이 사용한다. 참고로 객체에서 id 대신에 memberId 를
 사용해도 된다. 중요한 것은 일관성이다.
+
+<br>
+
 
 **엔티티 설계시 주의점**
 
@@ -155,7 +172,11 @@ System.out.println(member.getOrders().getClass());
 class java.util.ArrayList
 class org.hibernate.collection.internal.PersistentBag
 ```
+
 ---
+
+<br>
+
 
 ## 애플리케이션 구현 준비
 
@@ -172,6 +193,9 @@ class org.hibernate.collection.internal.PersistentBag
   - 상품 주문
   - 주문 내역 조회
   - 주문 취소
+
+<br>
+
 
 
 **애플리케이션 아키텍처**
@@ -197,6 +221,9 @@ class org.hibernate.collection.internal.PersistentBag
 개발순서 : 서비스, 리포지토리 계층을 개발하고, 테스트 케이스를 작성해서 검증, 마지막에 웹 계층 적용
 
 ---
+
+<br>
+
 
 ## 회원 도메인 개발
 
@@ -226,6 +253,9 @@ class org.hibernate.collection.internal.PersistentBag
 - findMembers()
 - findOne()
 
+<br>
+
+
 ## 상품 도메인 개발
 
 **구현 기능**
@@ -234,6 +264,9 @@ class org.hibernate.collection.internal.PersistentBag
 - 상품 목록 조회
 - 상품 수정
 
+<br>
+
+
 **순서**
 
 - 상품 엔티티 개발(비즈니스 로직 추가)
@@ -241,7 +274,13 @@ class org.hibernate.collection.internal.PersistentBag
 - 상품 서비스 개발
 - 상품 기능 테스트
 
+<br>
+
+
 ## 주문 도메인 개발
+
+<br>
+
 
 **구현 기능**
 
@@ -381,6 +420,9 @@ public class OrderService {
 이처럼 엔티티가 비즈니스 로직을 가지고 객체 지향의 특성을 적극 활용하는 것을 도메인 모델 패턴이라고 한다.
 
 
+<br>
+
+
 ### 주문 검색 기능 개발
 
 JPA 에서 동적쿼리를 어떻게 해결해야 하는가 ?
@@ -388,9 +430,17 @@ JPA 에서 동적쿼리를 어떻게 해결해야 하는가 ?
 ![](https://user-images.githubusercontent.com/109144975/217130117-173f4822-56b7-4ed4-9987-10a4d619fbcf.png)
 
 
+<br>
+
+
 ## 웹 계층 개발
 
+
 ### 변경 감자와 병합
+
+
+<br>
+
 
 **준영속 엔티티**
 
@@ -445,6 +495,9 @@ JPA는 보통 트랜잭션을 커밋하는 순간 영속성 컨텍스트에 새�
 - 변경 감지 기능 사용 - 이 부분을 사용하자
 - 병합(merge) 사용
 
+<br>
+
+
 **변경 감지 기능 사용**
 
 ```java
@@ -460,6 +513,9 @@ void update(Item itemParam) { //itemParam: 파리미터로 넘어온 준영속 �
 영속성 컨텍스트에서 엔티티를 다시 조회한 후에 데이터를 수정하는 방법
 
 트랜잭션 안에서 엔티티를 다시 조회, 변경할 값 선택 - 트랜잭션 커밋 시점에 변경 감지(Dirty checking) 이 동작하여 데이터베이스에 SQL 실행
+
+<br>
+
 
 **병합사용**
 
@@ -498,6 +554,9 @@ Item findItem = em.find(Item.class, itemParam.getId()); //같은 엔티티를
 
 
 이렇게 해야 변경지점이 다 entity로 간다.
+
+<br>
+
 
 #### 가장 좋은 해결 방법
 
